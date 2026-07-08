@@ -100,17 +100,27 @@ O mesmo script detecta o macOS automaticamente e usa **launchd** para auto-start
 
 ---
 
-### 🪟 Windows
+### 🪟 Windows (via WSL2 — Recomendado)
 
-```batch
-git clone https://github.com/kkayron/infinite-agents.git
-cd infinite-agents
-install.bat
+> O `free-claude-code` e o `LiteLLM` dependem de recursos Unix. Use WSL2 para compatibilidade total.
+
+**Passo 1:** Instale o WSL2 com Ubuntu
+```powershell
+# Abra o PowerShell como Administrador e execute:
+wsl --install
+# Reinicie o computador quando solicitado
 ```
 
-> ⚠ Execute o `install.bat` como **Administrador** para garantir que os serviços sejam registrados corretamente.
+**Passo 2:** Abra o terminal do Ubuntu (WSL) e execute:
+```bash
+git clone https://github.com/kkayron/infinite-agents.git
+cd infinite-agents
+chmod +x install.sh
+./install.sh
+```
 
-O script instala tudo e adiciona as entradas na pasta **Startup** do Windows para auto-start no login.
+> 💡 Após a instalação, use sempre o terminal Ubuntu (WSL) para rodar `fcc-claude` e `fcc-codex`.
+
 
 ---
 

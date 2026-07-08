@@ -3,6 +3,8 @@
 # infinite-agents — Automated Setup Script (Linux & macOS)
 # https://github.com/kkayron/infinite-agents
 # =============================================================
+# Windows users: use WSL2 + run this script inside Ubuntu terminal
+# https://learn.microsoft.com/windows/wsl/install
 
 set -e
 
@@ -30,10 +32,15 @@ echo -e "${GREEN}Platform detected: $OS${NC}"
 if ! command -v uv &>/dev/null; then
   echo -e "${YELLOW}[1/6] Installing uv...${NC}"
   curl -LsSf https://astral.sh/uv/install.sh | sh
-  export PATH="$HOME/.cargo/bin:$PATH"
+  # Ensure uv is on PATH immediately
+  export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+  source "$HOME/.bashrc" 2>/dev/null || source "$HOME/.zshrc" 2>/dev/null || true
 else
   echo -e "${GREEN}[1/6] uv already installed ✓${NC}"
 fi
+
+# Ensure uv tools are on PATH
+export PATH="$HOME/.local/bin:$PATH"
 
 # ----- Install free-claude-code -----
 echo -e "${YELLOW}[2/6] Installing free-claude-code...${NC}"
@@ -78,7 +85,9 @@ if [ "$PLATFORM" = "linux" ]; then
   systemctl --user daemon-reload
   systemctl --user enable litellm.service fcc-server.service
   systemctl --user start litellm.service fcc-server.service
-  echo -e "${GREEN}✓ SystemD services enabled and started${NC}"
+  # Enable linger so services survive after logout
+  loginctl enable-linger "$(whoami)" 2>/dev/null || true
+  echo -e "${GREEN}✓ SystemD services enabled and started (linger active)${NC}"
 
 elif [ "$PLATFORM" = "mac" ]; then
   mkdir -p "$HOME/Library/LaunchAgents"
@@ -89,6 +98,13 @@ elif [ "$PLATFORM" = "mac" ]; then
   launchctl load "$HOME/Library/LaunchAgents/com.infinite-agents.litellm.plist"
   launchctl load "$HOME/Library/LaunchAgents/com.infinite-agents.fcc-server.plist"
   echo -e "${GREEN}✓ launchd agents loaded${NC}"
+  # macOS PATH fix: add uv tools to shell profile
+  SHELL_RC="$HOME/.zshrc"
+  [ -f "$HOME/.bash_profile" ] && SHELL_RC="$HOME/.bash_profile"
+  if ! grep -q '.local/bin' "$SHELL_RC" 2>/dev/null; then
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_RC"
+    echo -e "${YELLOW}  ⚠ PATH updated in $SHELL_RC — restart your terminal or run: source $SHELL_RC${NC}"
+  fi
 fi
 
 # ----- Done -----
