@@ -1,0 +1,47 @@
+model_list:
+  # ==========================================
+  # CLAUDE CODE (Llama 3.1 70B via NVIDIA NIM)
+  # ==========================================
+  - model_name: "claude-3-5-sonnet-20240620"
+    litellm_params:
+      model: "nvidia_nim/meta/llama-3.1-70b-instruct"
+      api_key: "nvapi-YOUR_KEY_1"
+  - model_name: "claude-3-5-sonnet-20240620"
+    litellm_params:
+      model: "nvidia_nim/meta/llama-3.1-70b-instruct"
+      api_key: "nvapi-YOUR_KEY_2"
+  - model_name: "claude-3-5-sonnet-20240620"
+    litellm_params:
+      model: "nvidia_nim/meta/llama-3.1-70b-instruct"
+      api_key: "nvapi-YOUR_KEY_3"
+  - model_name: "claude-3-5-sonnet-20240620"
+    litellm_params:
+      model: "nvidia_nim/meta/llama-3.1-70b-instruct"
+      api_key: "nvapi-YOUR_KEY_4"
+
+  # ==========================================
+  # CODEX (Mistral 128B via NVIDIA NIM)
+  # ==========================================
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: "nvidia_nim/mistralai/mistral-medium-3.5-128b"
+      api_key: "nvapi-YOUR_KEY_1"
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: "nvidia_nim/mistralai/mistral-medium-3.5-128b"
+      api_key: "nvapi-YOUR_KEY_2"
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: "nvidia_nim/mistralai/mistral-medium-3.5-128b"
+      api_key: "nvapi-YOUR_KEY_3"
+  - model_name: "gpt-4o"
+    litellm_params:
+      model: "nvidia_nim/mistralai/mistral-medium-3.5-128b"
+      api_key: "nvapi-YOUR_KEY_4"
+
+litellm_settings:
+  drop_params: True
+
+router_settings:
+  routing_strategy: "usage-based-routing-v2"
+  num_retries: 3
