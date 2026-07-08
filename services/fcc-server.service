@@ -1,0 +1,12 @@
+[Unit]
+Description=Free Claude Code Server (infinite-agents)
+After=litellm.service
+Requires=litellm.service
+
+[Service]
+ExecStart=%HOME%/.local/bin/fcc-server
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=LiteLLM Proxy Router (infinite-agents)
+After=network.target
+
+[Service]
+WorkingDirectory=%HOME%/litellm_proxy
+ExecStart=%HOME%/litellm_proxy/venv/bin/litellm --config %HOME%/litellm_proxy/config.yaml --port 4000
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
